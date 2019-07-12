@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>avadim\process demo</title>
+</head>
+<body>
+
+<button class="js-cmd" data-cmd="start">Start process</button>
+<button class="js-cmd" data-cmd="check">Check process</button>
+<button class="js-cmd" data-cmd="stop">Stop process</button>
+
+<table>
+    <tr>
+        <td>PID</td>
+        <td><input type="text" class="js-value-pid"></td>
+    </tr>
+    <tr>
+        <td>Staus</td>
+        <td class="js-value-status"></td>
+    </tr>
+    <tr>
+        <td>Error</td>
+        <td class="js-value-error"></td>
+    </tr>
+    <tr>
+        <td>Command</td>
+        <td class="js-value-command"></td>
+    </tr>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $('.js-cmd').on('click', function(){
+        let cmd = $(this).data('cmd');
+        let pid = $('.js-value-pid').val();
+        let url = 'process.php?cmd=' + cmd;
+
+        if (cmd !== 'start') {
+            url += '&pid=' + pid;
+        }
+        $.get(url, function(data){
+            $('.js-value-pid').val(data.pid ? data.pid : '');
+            $('.js-value-status').text(data.status ? data.status : '');
+            $('.js-value-error').text(data.error ? data.error : '');
+            $('.js-value-command').text(data.command ? data.command : '');
+        });
+        return false;
+    });
+});
+</script>
+</body>
+</html>
